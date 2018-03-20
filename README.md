@@ -23,6 +23,12 @@
     FOR EACH ROW EXECUTE update_dUpdate;
     ```
   * __customdata__ : toutes les tables contiennent un champs JSONB customdata qui permet de stocker les données non prévues
+  * __SLOW QUERIES__ : si il y a besoin de trouver des requêtes lentes
+  ```
+  Dans postgresql.cong : shared_preload_libraries = 'pg_stat_statements'
+  CREATE EXTENSION pg_stat_statements;
+  select pg_stat_statements.total_time,pg_stat_statements.rows, pg_stat_statements.query from pg_stat_statements;
+  ```
   
 # PHP
   * __/libs/__ : le répertoire __libs/__ contient toutes les classes et fichiers de configuration de l'application
@@ -34,3 +40,6 @@
   * __returnResponse()__ : toutes les méthodes doivent retourner une réponse uniformisée. __returnResponse()__ (généralement dans error.inc.php) renvoit un objet avec :
     * __data__ : qui contient le payload de la réponse ou le message d'erreur en cas d'erreur
     * __error__ : true || false
+  * __getJoinString()__ : 
+  * __readJoinString()__ : 
+  * __Fonctions pures__ : les fonctions doivent être sans état externe (cookies, session ou autre). Elles doivent toujours renvoyer les mêmes résultats quand on passe les mêmes paramètres

@@ -43,3 +43,10 @@
   * __getJoinString()__ : 
   * __readJoinString()__ : 
   * __Fonctions pures__ : les fonctions doivent être sans état externe (cookies, session ou autre). Elles doivent toujours renvoyer les mêmes résultats quand on passe les mêmes paramètres
+  
+# Github
+  * tous les projets doivent être dans Github
+  * le fichier README doit contenir toutes les informations permettant le déploiement du projet
+  
+# Backup
+  * tous les projets doivent intégrer un script de backup

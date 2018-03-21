@@ -29,6 +29,8 @@
   CREATE EXTENSION pg_stat_statements;
   select pg_stat_statements.total_time,pg_stat_statements.rows, pg_stat_statements.query from pg_stat_statements;
   ```
+  * __login__ : pour toutes les requêtes d'authentification (login, recherche de mail ...) il faut utiliser __LOWER(champs)__ et également mettre en minuscule dans le language de programmation utilisé le paramètre. Celà permet de faire par exemple des pages de login qui fonctionne sans avoir à respecter la casse.
+  
   
 # PHP
   * __/libs/__ : le répertoire __libs/__ contient toutes les classes et fichiers de configuration de l'application
@@ -44,6 +46,10 @@
   * __readJoinString()__ : 
   * __Fonctions pures__ : les fonctions doivent être sans état externe (cookies, session ou autre). Elles doivent toujours renvoyer les mêmes résultats quand on passe les mêmes paramètres
   
+# Javascript
+  * __AJAX__ : les requêtes AJAX pour les insertions, modifications et suppressions sont __INTERDITES__. Les requêtes AJAX sont utilisées uniquement pour vérification d'informations, remplissage de listes déroulantes ...
+
+
 # Github
   * tous les projets doivent être dans Github
   * le fichier README doit contenir toutes les informations permettant le déploiement du projet

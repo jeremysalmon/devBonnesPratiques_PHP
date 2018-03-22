@@ -48,6 +48,8 @@
   
 # Javascript
   * __AJAX__ : les requêtes AJAX pour les insertions, modifications et suppressions sont __INTERDITES__. Les requêtes AJAX sont utilisées uniquement pour vérification d'informations, remplissage de listes déroulantes ...
+  * __Id & Name__ : les ID et NAME des input doivent être les mêmes que ceux de la base de données. Ceci permet de faire facilement du binding (une boucle qui parcours l'objet et qui renseigne correctement les champs)
+  * 
 
 
 # Github

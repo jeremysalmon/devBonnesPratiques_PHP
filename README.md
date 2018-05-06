@@ -38,11 +38,43 @@
   * __.inc.php__ : tous les fichiers qui contenant des define() et des fonctions se suffixent __.inc.php__
   * __1 classe = 1 table__ : la méthode mirroir de facilement se retrouver dans le code
   * __save()__ : une seule méthode a le droit d'écrire dans la base de données. __save()__ s'occupe des INSERT et des UPDATE. Aucune autre méthode ne doit insérer ou mettre à jour des enregistrements
-  * __readRow()__ : doit toujours être appelée pour parser le retour des __SELECT__ dans la base de données. C'est donc le seul endroit qui lit les résultats retournés par la base de données
+  * __readRow()__ : doit toujours être appelée pour parser le retour des __SELECT__ dans la base de données. C'est donc le seul endroit qui lit les résultats retournés par la base de données.
+```
+function readRow($row = false){
+   if($row === false)
+      return false;
+      if(trim($row['id']) !== ''){
+         $obj = new MA_CLASSE();
+         foreach($row as $key => $value){
+            switch($key){
+               case "customdata":
+                  $obj->customdata = json_decode($value);
+                  break;
+               default:
+                  $obj->$key = trim($value);
+            }
+         }
+
+         return $obj;
+       }
+       return false;
+   }
+```
+S'il y a des jointures, alors il faut appeler la fonction __readJoinString()__ avant de retourner l'$obj
+```
+$obj->dependencies = new stdClass();
+$depend = MA_CLASSE_JOINTE::readJoinString($row);
+if($depend !== false)
+   $obj->dependencies->MA_CLASSE_JOINTE = $depend;
+```
+
   * __returnResponse()__ : toutes les méthodes doivent retourner une réponse uniformisée. __returnResponse()__ (généralement dans error.inc.php) renvoit un objet avec :
     * __data__ : qui contient le payload de la réponse ou le message d'erreur en cas d'erreur
     * __error__ : true || false
-  * __getJoinString()__ : 
+  * __getJoinString()__ : permet à partir d'une classe de prendre toutes les propriétés et de construire une requête SQL de jointure. Cette fonction existe, car il est impossible de préfixer automatiquement les champs d'une requête PostgreSQL.
+  Le paramètre $prefix (optionnel) permet de prefixer en cas de multiple jointures sur la même table.
+  ATTENTION : il ne faut pas oublier le _ dans NOM_DE_CLASSE_.
+  
      ```function getJoinString($prefix = ''){
             $classVars = get_class_vars('NOM_DE_CLASSE');
 			         $joinString = '';
@@ -50,9 +82,35 @@
 				           $joinString .= ', NOM_DE_CLASSE.'.$name.' as '.$prefix.'NOM_DE_CLASSE_'.$name;
 			         }
 			         return $joinString;
-        }
+            }
      
-  * __readJoinString()__ : 
+  * __readJoinString()__ : a utiliser dans readRow(). Permet de voir si on a une jointure dans les résultats lus. Si oui on retourne un objet instancié.
+  ```
+  function readJoinString§($dbId = false, $prefix = ''){
+     if($row === false){
+        return false;
+     }
+     if(isset($row[$prefix.'hposte_id'])){
+        $obj = new NOM_CLASSE();
+        $vars = get_class_vars('NOM_CLASSE');
+        foreach ($vars as $key => $value) {
+           if(isset($row[$prefix.'NOM_CLASSE_'.strtolower($key)])){
+              switch (strtolower($key)) {
+                 case 'customdata':
+                    $obj->$key = json_decode($row[$prefix.'NOM_CLASSE_'.strtolower($key)]);    
+                    break;
+                 default:
+                    $obj->$key = trim($row[$prefix.'NOM_CLASSE_'.strtolower($key)]);
+                    break;
+               }
+            }
+        }
+        return $obj;
+      }
+      return false;
+}
+  ```
+  
   * __Fonctions pures__ : les fonctions doivent être sans état externe (cookies, session ou autre). Elles doivent toujours renvoyer les mêmes résultats quand on passe les mêmes paramètres
   
 # Javascript

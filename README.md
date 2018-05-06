@@ -43,6 +43,15 @@
     * __data__ : qui contient le payload de la réponse ou le message d'erreur en cas d'erreur
     * __error__ : true || false
   * __getJoinString()__ : 
+     ```function getJoinString($prefix = ''){
+            $classVars = get_class_vars('NOM_DE_CLASSE');
+			         $joinString = '';
+			         foreach($classVars as $name => $value) {
+				           $joinString .= ', NOM_DE_CLASSE.'.$name.' as '.$prefix.'NOM_DE_CLASSE_'.$name;
+			         }
+			         return $joinString;
+        }
+     
   * __readJoinString()__ : 
   * __Fonctions pures__ : les fonctions doivent être sans état externe (cookies, session ou autre). Elles doivent toujours renvoyer les mêmes résultats quand on passe les mêmes paramètres
   

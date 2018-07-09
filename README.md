@@ -113,7 +113,7 @@ if($depend !== false)
   
   * __Fonctions pures__ : les fonctions doivent être sans état externe (cookies, session ou autre). Elles doivent toujours renvoyer les mêmes résultats quand on passe les mêmes paramètres
   
-  * __Utilisation de get et set__ : le principe est d'avoir un point d
+  * __Utilisation de get et set__ : le principe est d'avoir un point d'entree et de sortie des données d'une classe. Tous les tests de validité des données peuvent ainsi être effectués dans le set par exemple.
   ```PHP
   <?php
   

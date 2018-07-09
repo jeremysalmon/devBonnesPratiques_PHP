@@ -113,6 +113,49 @@ if($depend !== false)
   
   * __Fonctions pures__ : les fonctions doivent être sans état externe (cookies, session ou autre). Elles doivent toujours renvoyer les mêmes résultats quand on passe les mêmes paramètres
   
+  * __Utilisation de get et set__ : le principe est d'avoir un point d
+  ```PHP
+  <?php
+  
+class testClass implements \JsonSerializable{
+        private $id;
+        private $name;
+
+        function __construct(){
+                $this->id = false;
+                $this->name = 'Inconnu';
+        }
+
+        function __set($prop, $value){
+                $this->$prop = trim($value);
+        }
+
+        function __get($prop){
+                return strtoupper($this->$prop);
+        }
+
+	/* Par défaut l'accès au $this ne fait pas appel aux __get.
+	   Il faut donc implicitement l'appeler
+	*/
+        public function jsonSerialize(){
+                $myObj = new stdClass();
+                $myObj->id = $this->id;
+                $myObj->name = $this->__get('name');
+                return $myObj;
+        }
+}
+
+$myClass = new testClass();
+
+echo("1. Acces a une fonction private\n");
+echo($myClass->name."\n");
+
+echo("2. Objet complet\n");
+echo(json_encode($myClass));
+
+?>
+  ```
+  
 # Javascript
   * __AJAX__ : les requêtes AJAX pour les insertions, modifications et suppressions sont __INTERDITES__. Les requêtes AJAX sont utilisées uniquement pour vérification d'informations, remplissage de listes déroulantes ...
   * __Id & Name__ : les ID et NAME des input doivent être les mêmes que ceux de la base de données. Ceci permet de faire facilement du binding (une boucle qui parcours l'objet et qui renseigne correctement les champs)

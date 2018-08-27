@@ -179,5 +179,5 @@ echo(json_encode($myClass));
     * TODO
   * __DMZ__ : si le serveur n'est pas chez un hebergeur, le mettre dans un DMZ
   * __Ports__ : bien veiller (avec un nmap par exemple) que seuls les ports necessaires sont ouverts depuis l'exterieur sur le serveur
-  * __SSH authorized_keys__ : ne configurer que les cles authorisees
+  * __SSH authorized_keys__ : ne configurer que les cles authorisees. ```ssh-copy-id -i id_rsa.pub root@IP_DISTANTE```
     

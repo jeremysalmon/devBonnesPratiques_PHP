@@ -172,7 +172,28 @@ echo(json_encode($myClass));
 # Serveur Web
   * __Nginx-Naxsi__ : il est preferable d'utiliser nginx-naxsi (disponible dans les depots debian) qui est un WAF permettant une premiere protection contre les XSS et SQL Injection. Il faut tout de meme veiller aux faux positifs.
   * __.git & autres__ : il faut creer des regles dans le fichier de configuration de Nginx pour interdire la navigation et la recuperation de fichiers dans les repertoires sensibles (.git, README, changelog ...)
-  * __fail2ban__ : pour la partie authentification ou detection d'activite suspecte, le moyen le plus simple est d'ecrire des ```error_log``` en PHP et de creer des regles fail2ban (TODO : mettre des exemples)
+  * __fail2ban__ : pour la partie authentification ou detection d'activite suspecte, le moyen le plus simple est d'ecrire des ```error_log``` en PHP et de creer des regles fail2ban :
+  Créer un fichier /etc/fail2ban/filter.d/MA_REGLE.CONF avec à l'intérieur : 
+    [INCLUDES]
+    before = common.conf
+    ```PHP
+    [Definition]
+    failregex = CRC_AUTH_ERROR : .*?" while reading response header from upstream, client: <HOST>
+    ignoreregex = learning=1
+    ```
+  Dans le fichier /etc/fail2ban/jail.conf il faut ajouter : 
+  ```
+    [crctsm]
+    enabled = true
+    port = http,https
+    filter = crctsm
+    logpath = /var/log/nginx/error.log
+    maxretry = 10
+    banaction = iptables-multiport-log
+    action = %(action_mw)s
+ ```
+
+
   * __headers HTTP__ : configurer Nginx pourqu'il mette au minimum les headers suivants :
     * TODO
   * __TLS__ : configurer uniquement TLSv1.2 / v1.3 et les ciphers suivants :

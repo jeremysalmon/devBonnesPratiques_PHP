@@ -31,6 +31,7 @@
   ```
   * __login__ : pour toutes les requêtes d'authentification (login, recherche de mail ...) il faut utiliser __LOWER(champs)__ et également mettre en minuscule dans le language de programmation utilisé le paramètre. Celà permet de faire par exemple des pages de login qui fonctionne sans avoir à respecter la casse.
   
+  * __type de champs TEXT__ : le problème de mettre le type TEXT pour les champs est qu'il a une taille "illimitée" (https://www.postgresql.org/docs/9.1/datatype-character.html). Si par mésaventure un bug vient a remplir des chaînes de caractères vous vous retrouvez avec des tables faisant des Go ....
   
 # PHP
   * __/libs/__ : le répertoire __libs/__ contient toutes les classes et fichiers de configuration de l'application
